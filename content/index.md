@@ -1,5 +1,5 @@
 +++
-title = "A page for Cloudfront"
+title = "A zola page"
 +++
 
 The words. They burn.
