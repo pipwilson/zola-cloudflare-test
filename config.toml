@@ -1,5 +1,5 @@
 # The URL the site will be built for
-base_url = "https://zola-cloudflare-test.pages.dev"
+base_url = "https://zola.philwilson.org"
 
 # Whether to automatically compile all Sass files in the sass directory
 compile_sass = false
