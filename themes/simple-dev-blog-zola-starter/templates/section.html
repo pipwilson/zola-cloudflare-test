@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% import "post-preview.html" as post_macros %}
+
+{% block posthead %} 
+  {% for post in section.pages %}
+    <link rel="prerender" href="{{ post.permalink }}" />
+  {% endfor %}
+{% endblock posthead %}
+
+{% block content %}
+
+<code>SECTION.HTML</code>
+
+<h1>{{section.title | date(format="%B %Y") }}</h1>
+
+{% if paginator.pages %}
+
+  <div style="background-color: red">
+    {% for page in paginator.pages %}
+    <article class="post">
+        {{ post_macros::post_preview(post=page) }}
+    </article>
+  {% endfor %}
+
+  <nav class="pagination">
+    {% if paginator.previous %}
+        <a class="previous" href="{{ paginator.previous }}">‹ Previous</a>
+    {% endif %}
+    {% if paginator.next %}
+        <a class="next" href="{{ paginator.next }}">Next ›</a>
+    {% endif %}
+  </nav>
+  </div>
+
+{% endif %}
+
+{% if section.pages %}
+  <code>PAGES</code>
+  <ol>
+  {% for post in section.pages %}
+    <li><a  href="{{ post.permalink }}" >{{ post.title }}</a> {{ post.date | date(format="%d %B, %Y") }}</li>
+  {% endfor %}
+  </ol>
+
+  {% for post in section.pages %}
+    {{ post_macros::post_preview(post=post) }}
+  {% endfor %}
+
+{% endif %}
+
+{% if section.subsections %}
+<code>SUBSECTIONS</code>
+<ol>
+  {% for subsection in section.subsections %}
+    {% set this_subsection = get_section(path=subsection, metadata_only=true) %}    
+    <li><a href="{{ this_subsection.path }}">{{ this_subsection.title | date(format="%B %Y") }}</a></li>
+  {% endfor %}
+</ol>
+{% endif %}
+
+{% endblock content %}

@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+
+{% block posthead %}
+  {# {% if page.earlier %}
+    <link rel="prerender" href="{{ page.earlier.permalink }}">
+  {% endif %}
+
+  {% if page.later %}
+    <link rel="prerender" href="{{ page.later.permalink }}">
+  {% endif %} #}
+
+  {% if page.taxonomies.tags %}
+    {% for tag in page.taxonomies.tags %}
+      <link rel="prerender"  href="{{ get_taxonomy_url(kind="tags", name=tag) }}">
+    {% endfor %}
+  {% endif %}
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "NewsArticle",
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://google.com/article"
+      },
+      "headline": "{{ page.title }}",
+      "image": [],{% if page.date %}
+      "datePublished": "{{ page.date | date(format="%+") }}",
+      "dateModified": "{{ page.date | date(format="%+") }}"{% endif %}{% if config.extra.author %},
+      "author": {
+        "@type": "Person",
+        "name": "{{ config.extra.author }}"
+      },
+       "publisher": {
+        "@type": "Organization",
+        "name": "{{ config.extra.author }}"{% if config.extra.icon %},
+        "logo": {
+          "@type": "ImageObject",
+          "url": "{{ get_url(path=config.extra.icon) | safe }}"
+        }
+        {% endif %}
+      }
+      {% endif %}
+    }
+  </script>
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {% set len = page.ancestors | length %}
+
+        {% for section_path in page.ancestors %}
+        {
+          {% set section = get_section(path=section_path) %}
+          "@type": "ListItem",
+          "position": {{ loop.index }},
+          "name": "{{ section.title }}",
+          "item": "{{ section.permalink | safe }}"
+        },
+        {% endfor %}
+        {
+          "@type": "ListItem",
+          "position": {{ len + 1 }},
+          "name": "{{ page.title }}",
+          "item": "{{ page.permalink | safe }}"
+        }
+      ]
+    }
+  </script>
+{% endblock %}
+
+{% block content %}
+
+  <div class="post-title">
+    <h1>{{ page.title }}</h1>
+    <small>
+      {% if page.date %}{{ page.date | date(format="%d %B, %Y") }}{% endif %}
+    </small>
+  </div>
+
+  <div>
+    {{ page.content | safe }}
+    <hr />
+    <p><small>
+      {% if page.taxonomies.tags %}
+      See other posts tagged with 
+      <span class="tags">
+        {% for tag in page.taxonomies.tags %}
+          <a href="{{ get_taxonomy_url(kind="tags", name=tag) }}">{{ tag }}</a>
+        {% endfor %}
+      </span>
+    {% endif %}
+    </small></p>
+  </div>
+
+{% endblock content %}

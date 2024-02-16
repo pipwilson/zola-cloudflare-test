@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block styles%}
+  <link rel="stylesheet" href="{{ get_url(path="index.css") | safe }}">
+{% endblock styles %}
+
+{% block content %}
+
+  <h1>index.html template</h1>
+
+  <ul>
+    {% for link in config.extra.nav %}
+      <li><a href="{{ link.path }}">{{ link.name }}</a></li>
+    {% endfor %}
+  </ul>
+
+  {{ section.content | safe }}
+
+{% endblock content %}
