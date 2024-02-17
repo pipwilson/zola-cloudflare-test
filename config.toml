@@ -9,6 +9,10 @@ build_search_index = true
 
 theme = "simple-dev-blog-zola-starter"
 
+# whether to generate rss/atom
+generate_feed = true
+feed_filename = "blog/atom.xml"
+
 taxonomies = [
     { name = "tags" }
 ]
